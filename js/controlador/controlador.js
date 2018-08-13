@@ -9,13 +9,16 @@ Controlador.prototype = {
   agregarPregunta: function() {
     var value = $('#pregunta').val();
     var respuestas = [];
-
-    $('[name="option[]"]').each(function() {
+    $('[name="option[]"]').each(function(){
       var respuesta = $(this).val();
       //Completar el agregado de una respuesta
       // pusheandola al arreglo de respuestas
-      
+      if(respuesta !== '')
+      {
+        respuestas.push(respuesta);
+      }
     })
+    console.log(respuestas);
     this.modelo.agregarPregunta(value, respuestas);
   },
 
@@ -29,6 +32,18 @@ Controlador.prototype = {
       $('input[name=' + id + ']').prop('checked',false);
       contexto.agregarVoto(pregunta,respuestaSeleccionada);
     });
+  },
+
+  borrarPregunta: function(){
+    var preguntaABorrar = $('#lista').find('li.active').attr('id');
+    if(Number.isNaN(preguntaABorrar))
+    {
+      this.modelo.borrarPregunta(preguntaABorrar);
+    }
+    else
+    {
+      alert('Seleccione un elemento');
+    }
   },
 
   

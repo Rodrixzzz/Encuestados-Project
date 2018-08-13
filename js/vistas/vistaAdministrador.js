@@ -8,7 +8,7 @@ var VistaAdministrador = function(modelo, controlador, elementos) {
   var contexto = this;
 
   // suscripción de observadores
-  this.modelo.preguntaAgregada.suscribir(function() {
+  this.modelo.preguntasActualizadas.suscribir(function() {
     contexto.reconstruirLista();
   });
 };
@@ -18,19 +18,27 @@ VistaAdministrador.prototype = {
   //lista
   inicializar: function() {
     //llamar a los metodos para reconstruir la lista, configurar botones y validar formularios
+    validacionDeFormulario();
+    this.configuracionDeBotones();
   },
 
   construirElementoPregunta: function(pregunta){
     var contexto = this;
     var nuevoItem;
     //completar
+    item=document.createElement('li');
+    item.id = pregunta.id;
+    item.classList = 'list-group-item';
+    item.innerHTML = pregunta.textoPregunta;
+    nuevoItem = $(item);
     //asignar a nuevoitem un elemento li con clase "list-group-item", id "pregunta.id" y texto "pregunta.textoPregunta"
     var interiorItem = $('.d-flex');
     var titulo = interiorItem.find('h5');
     titulo.text(pregunta.textoPregunta);
-    interiorItem.find('small').text(pregunta.cantidadPorRespuesta.map(function(resp){
-      return " " + resp.textoRespuesta;
-    }));
+    // interiorItem.find('small').text(pregunta.cantidadPorRespuesta.map(function(resp){
+    //   return " " + resp.textoRespuesta;
+    // }));
+    interiorItem.find('small').text(pregunta.cantidadPorRespuesta.join(','));
     nuevoItem.html($('.d-flex').html());
     return nuevoItem;
   },
@@ -50,12 +58,14 @@ VistaAdministrador.prototype = {
 
     //asociación de eventos
     e.botonAgregarPregunta.click(function() {
-      contexto.limpiarFormulario();
       contexto.controlador.agregarPregunta();
+      contexto.limpiarFormulario();
     });
     // Completar la asociación de de eventos a los
     // botones editarPregunta, borrarPregunta y borrarTodo
-   
+    e.botonBorrarPregunta.click(function () {
+      contexto.controlador.borrarPregunta();
+    });
   },
 
 

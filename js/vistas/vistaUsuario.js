@@ -8,7 +8,7 @@ var VistaUsuario = function(modelo, controlador, elementos) {
   var contexto = this;
 
   //suscripcion a eventos del modelo
-  this.modelo.preguntaAgregada.suscribir(function() {
+  this.modelo.preguntasActualizadas.suscribir(function() {
     contexto.reconstruirLista();
   });
 };
