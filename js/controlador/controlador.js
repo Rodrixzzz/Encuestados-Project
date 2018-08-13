@@ -45,6 +45,5 @@ Controlador.prototype = {
       alert('Seleccione un elemento');
     }
   },
-
   
 };

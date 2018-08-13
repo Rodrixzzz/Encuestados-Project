@@ -29,8 +29,32 @@ Modelo.prototype = {
      });
     this.preguntasActualizadas.notificar();
   },
+  // editarPregunta: function(Nuevonombre, Nuevarespuestas,idAModificar){
+  //   var indexAModificar = this.preguntas.indexOf('id:'+idAModificar);
+  //   this.preguntas[indexAModificar] = {'textoPregunta': Nuevonombre, 'id': idAModificar, 'cantidadPorRespuesta': Nuevarespuestas}
+  //   this.preguntasActualizadas.notificar();
+  // },
+  borrarTodo: function(){
+    this.preguntas = [];
+    this.preguntasActualizadas.notificar();
+  },
+  // agregarVoto: function(){
+
+  // },
   //se guardan las preguntas
   guardar: function(){
+    localStorage.removeItem('array');
+    localStorage.setItem('array',JSON.stringify(this.preguntas));
     this.ultimoId++;
   },
+  recuperarDatos:function(){
+    var datos = localStorage.getItem('array');
+    if(datos !== null)
+    {
+      datos = JSON.parse(datos);
+      this.preguntas = datos;
+      this.ultimoId = this.preguntas[this.preguntas.length - 1].id;
+      this.preguntasActualizadas.notificar();
+    }
+  }
 };
