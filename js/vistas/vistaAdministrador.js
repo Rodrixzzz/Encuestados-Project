@@ -35,10 +35,9 @@ VistaAdministrador.prototype = {
     var interiorItem = $('.d-flex');
     var titulo = interiorItem.find('h5');
     titulo.text(pregunta.textoPregunta);
-    // interiorItem.find('small').text(pregunta.cantidadPorRespuesta.map(function(resp){
-    //   return " " + resp.textoRespuesta;
-    // }));
-    interiorItem.find('small').text(pregunta.cantidadPorRespuesta.join(','));
+    interiorItem.find('small').text(pregunta.cantidadPorRespuesta.map(function(resp){
+      return " " + resp.textoRespuesta;
+    }));
     nuevoItem.html($('.d-flex').html());
     return nuevoItem;
   },
@@ -65,6 +64,13 @@ VistaAdministrador.prototype = {
     // botones editarPregunta, borrarPregunta y borrarTodo
     e.botonBorrarPregunta.click(function () {
       contexto.controlador.borrarPregunta();
+    });
+    e.borrarTodo.click(function(){
+      contexto.controlador.borrarTodo();
+    });
+    e.botonEditarPregunta.click(function(){
+      contexto.controlador.editarPregunta();
+      contexto.limpiarFormulario();
     });
   },
 

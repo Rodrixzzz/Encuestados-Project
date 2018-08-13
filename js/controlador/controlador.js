@@ -15,28 +15,36 @@ Controlador.prototype = {
       // pusheandola al arreglo de respuestas
       if(respuesta !== '')
       {
-        respuestas.push(respuesta);
+        respuestas.push({'textoRespuesta': respuesta, cantidad: 0});
       }
     })
-    console.log(respuestas);
     this.modelo.agregarPregunta(value, respuestas);
   },
 
   agregarVotos: function(){
     var contexto = this;
     $('#preguntas').find('div').each(function(){
-      var nombrePregunta = $(this).attr('value')
+      var nombrePregunta = $(this).attr('name')
       var id = $(this).attr('id')
-      var pregunta = contexto.modelo.obtenerPregunta(nombrePregunta);
+      var pregunta = contexto.modelo.obtenerPregunta(id);
       var respuestaSeleccionada = $('input[name=' + id + ']:checked').val();
       $('input[name=' + id + ']').prop('checked',false);
-      contexto.agregarVoto(pregunta,respuestaSeleccionada);
+      console.log(respuestaSeleccionada);
+      if(respuestaSeleccionada !== undefined)
+      {
+        contexto.modelo.agregarVoto(pregunta,respuestaSeleccionada);
+      }
+      else
+      {
+        alert('Seleccione una opcion');
+      }
     });
   },
 
   borrarPregunta: function(){
     var preguntaABorrar = $('#lista').find('li.active').attr('id');
-    if(Number.isNaN(preguntaABorrar))
+    console.log(preguntaABorrar);
+    if(preguntaABorrar !== undefined)
     {
       this.modelo.borrarPregunta(preguntaABorrar);
     }
@@ -45,5 +53,24 @@ Controlador.prototype = {
       alert('Seleccione un elemento');
     }
   },
-  
+  borrarTodo:function(){
+    this.modelo.borrarTodo();
+  },
+  editarPregunta:function(){
+    var preguntaAEditar = $('#lista').find('li.active').attr('id');
+    if(preguntaAEditar !== undefined)
+    {
+      var texto = prompt('Ingrese el texto a editar');
+      if(texto !== ' ' && texto !== undefined){
+        this.modelo.editarPregunta(preguntaAEditar,texto);
+      } 
+      else{
+        alert('Ingrese un texto valido');
+      }
+    }
+    else
+    {
+      alert('Seleccione un elemento');
+    }
+  }
 };

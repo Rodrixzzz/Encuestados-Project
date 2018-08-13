@@ -10,6 +10,7 @@ var VistaUsuario = function(modelo, controlador, elementos) {
   //suscripcion a eventos del modelo
   this.modelo.preguntasActualizadas.suscribir(function() {
     contexto.reconstruirLista();
+    contexto.reconstruirGrafico();
   });
 };
 
@@ -22,6 +23,7 @@ VistaUsuario.prototype = {
     
     elementos.botonAgregar.click(function() {
       contexto.controlador.agregarVotos();  
+      contexto.limpiarFormulario();
     });
       
     this.reconstruirGrafico();
@@ -33,7 +35,7 @@ VistaUsuario.prototype = {
     //obtiene las preguntas del local storage
     var preguntas = this.modelo.preguntas;
     preguntas.forEach(function(clave){
-      var listaParaGrafico = [[clave.textoPregunta, 'Cantidad']];
+      var listaParaGrafico = [[clave.textoPregunta, 'cantidad']];
       var respuestas = clave.cantidadPorRespuesta;
       respuestas.forEach (function(elemento) {
         listaParaGrafico.push([elemento.textoRespuesta,elemento.cantidad]);
@@ -51,6 +53,11 @@ VistaUsuario.prototype = {
     preguntas.forEach(function(clave){
       //completar
       //agregar a listaPreguntas un elemento div con valor "clave.textoPregunta", texto "clave.textoPregunta", id "clave.id"
+      item=document.createElement('div');
+      item.id = clave.id;
+      item.innerHTML = clave.textoPregunta;
+      item.name = clave.textoPregunta;
+      listaPreguntas.html($(item));
       var respuestas = clave.cantidadPorRespuesta;
       contexto.mostrarRespuestas(listaPreguntas,respuestas, clave);
     })

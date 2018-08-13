@@ -21,31 +21,50 @@ Modelo.prototype = {
     var nuevaPregunta = {'textoPregunta': nombre, 'id': id, 'cantidadPorRespuesta': respuestas};
     this.preguntas.push(nuevaPregunta);
     this.guardar();
-    this.preguntasActualizadas.notificar();
   },
   borrarPregunta: function(idABorrar){
     this.preguntas = this.preguntas.filter(function(item){
       return item.id != idABorrar;
      });
-    this.preguntasActualizadas.notificar();
+    this.guardar();
   },
-  // editarPregunta: function(Nuevonombre, Nuevarespuestas,idAModificar){
-  //   var indexAModificar = this.preguntas.indexOf('id:'+idAModificar);
-  //   this.preguntas[indexAModificar] = {'textoPregunta': Nuevonombre, 'id': idAModificar, 'cantidadPorRespuesta': Nuevarespuestas}
-  //   this.preguntasActualizadas.notificar();
-  // },
+  editarPregunta: function(idAModificar,Nuevonombre){
+    var preguntaAModificar = this.obtenerPregunta(idAModificar);
+    preguntaAModificar.textoPregunta = Nuevonombre;
+    this.guardar();
+  },
   borrarTodo: function(){
     this.preguntas = [];
-    this.preguntasActualizadas.notificar();
+    this.guardar();
   },
-  // agregarVoto: function(){
-
-  // },
+  agregarVoto: function(pregunta,respuestaSeleccionada){
+    this.preguntas.forEach(element => {
+      if(element.id === pregunta.id)
+      {
+        for (var index = 0; index < element.cantidadPorRespuesta.length; index++){
+          if(element.cantidadPorRespuesta[index].textoRespuesta === respuestaSeleccionada ){
+            element.cantidadPorRespuesta[index].cantidad++;
+          }
+        }
+      }
+    });
+    this.guardar();
+  },
+  obtenerPregunta:function(idABuscar){
+    for (var index = 0; index < this.preguntas.length; index++) {
+      if(this.preguntas[index].id == idABuscar)
+      {
+        return this.preguntas[index];
+      }
+    }
+  },
   //se guardan las preguntas
   guardar: function(){
     localStorage.removeItem('array');
     localStorage.setItem('array',JSON.stringify(this.preguntas));
     this.ultimoId++;
+    this.preguntasActualizadas.notificar();
+
   },
   recuperarDatos:function(){
     var datos = localStorage.getItem('array');
