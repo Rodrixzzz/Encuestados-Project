@@ -23,7 +23,7 @@ VistaUsuario.prototype = {
     
     elementos.botonAgregar.click(function() {
       contexto.controlador.agregarVotos();  
-      contexto.limpiarFormulario();
+      contexto.limpiarNombre();
     });
       
     this.reconstruirGrafico();
@@ -109,4 +109,7 @@ VistaUsuario.prototype = {
       }
     }
   },
+  limpiarNombre:function(){
+    var $nombre = $('#nombreUsuario').val(' ');
+  }
 };

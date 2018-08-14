@@ -52,7 +52,7 @@ Modelo.prototype = {
   },
   obtenerPregunta:function(idABuscar){
     for (var index = 0; index < this.preguntas.length; index++) {
-      if(this.preguntas[index].id == idABuscar)
+      if(this.preguntas[index].id === idABuscar)
       {
         return this.preguntas[index];
       }

@@ -26,31 +26,22 @@ Controlador.prototype = {
     $('#preguntas').find('div').each(function(){
       var nombrePregunta = $(this).attr('name')
       var id = $(this).attr('id')
+      id = parseInt(id);
       var pregunta = contexto.modelo.obtenerPregunta(id);
       var respuestaSeleccionada = $('input[name=' + id + ']:checked').val();
       $('input[name=' + id + ']').prop('checked',false);
-      console.log(respuestaSeleccionada);
-      if(respuestaSeleccionada !== undefined)
+      if(contexto.validarDatos(respuestaSeleccionada,null))
       {
         contexto.modelo.agregarVoto(pregunta,respuestaSeleccionada);
-      }
-      else
-      {
-        alert('Seleccione una opcion');
       }
     });
   },
 
   borrarPregunta: function(){
     var preguntaABorrar = $('#lista').find('li.active').attr('id');
-    console.log(preguntaABorrar);
-    if(preguntaABorrar !== undefined)
+    if(this.validarDatos(preguntaABorrar,null))
     {
       this.modelo.borrarPregunta(preguntaABorrar);
-    }
-    else
-    {
-      alert('Seleccione un elemento');
     }
   },
   borrarTodo:function(){
@@ -58,19 +49,26 @@ Controlador.prototype = {
   },
   editarPregunta:function(){
     var preguntaAEditar = $('#lista').find('li.active').attr('id');
-    if(preguntaAEditar !== undefined)
+    preguntaAEditar = parseInt(preguntaAEditar);
+    if(this.validarDatos(preguntaAEditar,null))
     {
       var texto = prompt('Ingrese el texto a editar');
-      if(texto !== ' ' && texto !== undefined){
+      if(this.validarDatos(texto,'input')){
         this.modelo.editarPregunta(preguntaAEditar,texto);
       } 
-      else{
+    }
+  },
+  validarDatos: function(valor,opcion){
+    if (valor !== undefined && valor!== ' '){
+      return true;
+    }
+    else{
+      if(opcion === 'Input'){
         alert('Ingrese un texto valido');
       }
-    }
-    else
-    {
-      alert('Seleccione un elemento');
+      else{
+        alert('Seleccione un elemento');
+      }
     }
   }
 };
