@@ -13,24 +13,27 @@ Controlador.prototype = {
       var respuesta = $(this).val();
       //Completar el agregado de una respuesta
       // pusheandola al arreglo de respuestas
-      if(respuesta !== '')
+      if(respuesta != '')
       {
         respuestas.push({'textoRespuesta': respuesta, cantidad: 0});
       }
     })
-    this.modelo.agregarPregunta(value, respuestas);
+    if(respuestas.length > 0 && value != '')
+      this.modelo.agregarPregunta(value, respuestas);
+    else
+      alert("Debe completar los campos");
   },
 
   agregarVotos: function(){
     var contexto = this;
     $('#preguntas').find('div').each(function(){
-      var nombrePregunta = $(this).attr('name')
+      var nombreUsuario = $('#nombreUsuario').val();
       var id = $(this).attr('id')
       id = parseInt(id);
       var pregunta = contexto.modelo.obtenerPregunta(id);
       var respuestaSeleccionada = $('input[name=' + id + ']:checked').val();
       $('input[name=' + id + ']').prop('checked',false);
-      if(contexto.validarDatos(respuestaSeleccionada,null))
+      if(contexto.validarDatos(respuestaSeleccionada,null) && contexto.validarDatos(nombreUsuario,'Input') )
       {
         contexto.modelo.agregarVoto(pregunta,respuestaSeleccionada);
       }
@@ -53,7 +56,7 @@ Controlador.prototype = {
     if(this.validarDatos(preguntaAEditar,null))
     {
       var texto = prompt('Ingrese el texto a editar');
-      if(this.validarDatos(texto,'input')){
+      if(this.validarDatos(texto,'Input')){
         this.modelo.editarPregunta(preguntaAEditar,texto);
       } 
     }
